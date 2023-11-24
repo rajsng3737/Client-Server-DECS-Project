@@ -1,12 +1,13 @@
-g++ server.cpp -o server
+g++ -o myserver server.cpp handleClient.cpp -lpthread
 g++ client.cpp -o client
-port=6666
-./server $port &
-max_load=140
+port=2222
+thread_pool=12
+./myserver $port $thread_pool &
+max_load=15
 for((load=20; load<max_load; load=$load+20));do
     mkdir $load
     for ((i = 0; i < $load; i++)); do
-        ./client localhost $port write.c 15 1 > "$load/$i$load.txt" &
+        ./client localhost $port write.c 15 1 > "$load/$i$load.txt"
         wait_pid[${i}]=$!
     done
     vmstat 1 | awk '{print $15}' >> cpu-utilization$load.txt &
@@ -27,8 +28,7 @@ for((myload=20; myload<max_load; myload=$myload+20));do
     grep "Request Rate Sent" *.txt | awk -v file_count="$file_count" -v loads="$myload" 'BEGIN{ sum=0; } {sum += $4;} END { print loads, (sum/file_count) }' >> ../MvsRequestRate.txt
    cd ..
 done
-
-generating Clients vs CPU Utilization
+#generating Clients vs CPU Utilization
 input_file="mvsload.txt"
 output_file="ClientVsCPU.png"
 

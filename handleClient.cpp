@@ -201,7 +201,7 @@ void handleClient(int newsockfd)
     system(("rm -f " + fn_prefix + "RF.out").c_str());
     system(("rm -f " + fn_prefix + "output_log").c_str());
     system(("rm -f " + fn_prefix + "runtime_error_log").c_str());
-    system(("rm -f " + fn_prefix + "diffOutput.=
+    system(("rm -f " + fn_prefix + "diffOutput.txt").c_str());
     system(("rm -f " + fn_prefix + "compile_error_log").c_str());
     close(newsockfd);
 }
